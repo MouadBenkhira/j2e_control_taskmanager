@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add User</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .navbar {
+            background-color: #343a40;
+            margin-bottom: 20px;
+        }
+        .navbar a {
+            color: white !important;
+        }
+        .navbar a:hover {
+            background-color: #575d63;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <a class="navbar-brand" href="#">Admin Dashboard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/adduser}">Add User</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/task/addtask}">Add Task</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/projects/showprojects}">View Projects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/projects/addproject}">Add Project</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/task/all}">View Tasks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/alls}">View Users</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h1>Add User</h1>
+    <form th:action="@{/add}" method="post">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" class="form-control" id="fullName" name="fullName" required>
+        </div>
+        <div class="form-group">
+            <label for="tel">Telephone:</label>
+            <input type="tel" class="form-control" id="tel" name="tel" required>
+        </div>
+        <div class="form-group">
+            <label for="birthDay">Birth Date:</label>
+            <input type="date" class="form-control" id="birthDay" name="birthDay" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="inscriptionDate">Inscription Date:</label>
+            <input type="date" class="form-control" id="inscriptionDate" name="inscriptionDate" required>
+        </div>
+        <div class="form-group">
+            <label for="sex">Sex:</label>
+            <select class="form-control" id="sex" name="sex" required>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Add User</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

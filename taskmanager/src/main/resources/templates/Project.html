@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Manager</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .navbar {
+            background-color: #343a40;
+            margin-bottom: 20px;
+        }
+        .navbar a {
+            color: white !important;
+        }
+        .navbar a:hover {
+            background-color: #575d63;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <a class="navbar-brand" href="#">Admin Dashboard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/adduser}">Add User</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/task/addtask}">Add Task</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/projects/showprojects}">View Projects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/projects/addproject}">Add Project</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/task/all}">View Tasks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/alls}">View Users</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Project Manager</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Use Thymeleaf to iterate over projects -->
+        <tr th:each="project : ${projects}">
+            <td th:text="${project.id}"></td>
+            <td th:text="${project.description}"></td>
+            <td th:text="${project.startDate}"></td>
+            <td th:text="${project.getEndDate()}"></td>
+            <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal"
+                        th:attr="data-id=${project.id}, data-description=${project.description}, data-startdate=${project.startDate}, data-enddate=${project.endDate}">
+                    Update
+                </button>
+                <form th:action="@{/projects/delete}" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${project.id}" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form th:action="@{/projects/update}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Update Project</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="updateProjectId" name="id">
+                    <div class="form-group">
+                        <label for="updateDescription">Description:</label>
+                        <input type="text" class="form-control" id="updateDescription" name="Description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateStartDate">Start Date:</label>
+                        <input type="date" class="form-control" id="updateStartDate" name="StartDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateEndDate">End Date:</label>
+                        <input type="date" class="form-control" id="updateEndDate" name="EndDate" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#updateModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var id = button.data('id');
+            var description = button.data('description');
+            var startDate = button.data('startdate');
+            var endDate = button.data('enddate');
+
+            var modal = $(this);
+            modal.find('#updateProjectId').val(id);
+            modal.find('#updateDescription').val(description);
+            modal.find('#updateStartDate').val(startDate);
+            modal.find('#updateEndDate').val(endDate);
+        });
+    });
+
+</script>
+</body>
+</html>
